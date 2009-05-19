@@ -1,0 +1,50 @@
+= rODF
+
+This is a library for writing to ODF output with Ruby. It currently only
+supports creating spreadsheets (ODS). Text documents (ODT) and slide shows (ODP)
+may be added some time in the future.
+
+This is NOT an ODF reading library.
+
+=== Installation
+
+You should be able to install the latest stable version by saying something like
+
+  sudo gem install rodf
+
+=== How do I use it?
+
+rODF works pretty much like Builder, but with ODF-aware constructs. Try this:
+
+  require 'odf/spreadsheet'
+
+  ODF::SpreadSheet.file("my-spreadsheet.ods") do |spreadsheet|
+    spreadsheet.table 'My first table from Ruby' do |table|
+      table.row {|row|  row.cell 'Hello, rODF world!' }
+    end
+  end
+
+Some basic formatting is also possible:
+
+  require 'odf/spreadsheet'
+
+  ODF::SpreadSheet.file("my-spreadsheet.ods") do |spreadsheet|
+    spreadsheet.style 'red-cell', :family => :cell do |style|
+      style.property :text, 'font-weight' => 'bold', 'color' => '#ff0000'
+    end
+    spreadsheet.table 'Red text table' do |table|
+      table.row {|row|  row.cell 'Red', :style => 'red-cell' }
+    end
+  end
+
+########### Объединение ячеек
+Объединяем три ячейки начиная с первой
+
+  require 'odf/spreadsheet'
+
+  ODF::SpreadSheet.file("my-spreadsheet.ods") do |spreadsheet|
+    spreadsheet.table 'Red text table' do |table|
+      table.row {|row|  row.cell 'Red', :number_columns_spanned => 3 } 
+    end
+  end
+
